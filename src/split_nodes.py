@@ -15,6 +15,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         if type(node) != TextNode:
             new_nodes.append(node)
         else:
+            if node.text_type != TextType.text_type_text:
+                new_nodes.append(node)
+                continue
             if delimiter in allowed_delimiter.keys():
                 split_nodes = node.text.split(delimiter)
                 if len(split_nodes) % 2 == 0:
@@ -32,6 +35,10 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 def split_nodes_image(old_nodes):
     new_nodes = []
     for node in old_nodes:
+        if type(node) == TextNode:
+            if node.text_type != TextType.text_type_text:
+                new_nodes.append(node)
+                continue
         extracted_images = extract_markdown_images(node.text)
         if extracted_images == None:
             new_nodes.append(node)
@@ -58,6 +65,10 @@ def split_nodes_image(old_nodes):
 def split_nodes_link(old_nodes):
     new_nodes = []
     for node in old_nodes:
+        if type(node) == TextNode:
+            if node.text_type != TextType.text_type_text:
+                new_nodes.append(node)
+                continue
         extracted_links = extract_markdown_links(node.text)
         if extracted_links == None:
             new_nodes.append(node)
