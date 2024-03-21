@@ -7,14 +7,18 @@ from markdown_to_html import (
     convert_to_unordered_list,
     convert_to_ordered_list,
 )
+from htmlnode import ParentNode
+from leafnode import LeafNode
 
 
 class TestMarkdownToHtml(unittest.TestCase):
     def test_paragraph_conversion(self):
         blocks = ["This is a paragraph block", "with multiple lines"]
         converted_paragraphs = convert_to_paragraph(blocks)
-        check_paragraphs = "<p>\nThis is a paragraph block\nwith multiple lines\n</p>"
-        self.assertEqual(converted_paragraphs, check_paragraphs)
+        check_paragraphs = ParentNode(
+            "div", [LeafNode("p", "This is a paragraph block\nwith multiple lines")]
+        )
+        self.assertEqual(converted_paragraphs, check_paragraphs.to_html())
 
     def test_quote_conversion(self):
         blocks = ["> This is one quote", "> This is another quote"]

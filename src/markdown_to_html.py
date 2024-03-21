@@ -1,16 +1,17 @@
 from typing import Counter
 from markdown_to_blocks import BlockType
-from htmlnode import HTMLNode
-
-Counter
+from htmlnode import ParentNode
+from leafnode import LeafNode
 
 
 def convert_to_paragraph(block):
-    paragraph = "<p>\n"
+    paragraph = ""
     for text in block:
         paragraph += text + "\n"
-    paragraph += "</p>"
-    return paragraph
+    paragraph = paragraph[:-1]
+    paragraph_node = LeafNode("p", paragraph)
+    div = ParentNode("div", [paragraph_node])
+    return div.to_html()
 
 
 def convert_to_quote(block):
