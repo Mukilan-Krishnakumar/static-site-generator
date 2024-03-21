@@ -48,7 +48,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
                 "This is a paragraph of text. It has some **bold** and *italic* words inside of it."
             ],
             ["> A block here", "> Is a block there"],
-            ["```Me testing code```"],
+            ["```Me testing", "code ```", ""],
             ["1. Hello Internet", "2. Welcome to Film Theory", "3. This is Matpat"],
             ["- Hello Again", "- Hihi"],
         ]

@@ -28,6 +28,8 @@ def markdown_to_blocks(markdown):
 def block_to_block_type(block):
     num_list = [str(n) for n in range(1, len(block) + 1)]
     created_num_list = []
+    if block[-1] == "":
+        block = block[:-1]
     for num, text in enumerate(block):
         if re.match(r"(?<!#)#{1,6} \w*", text) != None:
             return BlockType.block_type_heading
