@@ -2,24 +2,33 @@ from typing import Counter
 from markdown_to_blocks import BlockType
 from htmlnode import ParentNode
 from leafnode import LeafNode
+from text_to_textnodes import text_to_textnode
+from convert_textnode_to_htmlnode import text_node_to_html_node
+
+
+def text_to_children(text_nodes):
+    children = []
+    for text_node in text_nodes:
+        html_node = text_node_to_html_node(text_node)
+        children.append(html_node)
+    return children
 
 
 def convert_to_paragraph(block):
-    paragraph = ""
-    for text in block:
-        paragraph += text + "\n"
-    paragraph = paragraph[:-1]
-    paragraph_node = LeafNode("p", paragraph)
-    div = ParentNode("div", [paragraph_node])
-    return div.to_html()
+    paragraph = " ".join(block.split("\n"))
+    text_nodes = text_to_textnode(paragraph)
+    children = text_to_children(text_nodes)
+    paragraph_node = ParentNode("p", children)
+    return paragraph_node
 
 
 def convert_to_quote(block):
-    quote = "<blockquote>\n"
-    for text in block:
+    quote = ""
+    for text in block.splitlines():
         quote += text[2:] + "\n"
-    quote += "</blockquote>"
-    return quote
+    quote = quote[:-1]
+    quote_node = LeafNode("blockquote", quote)
+    return quote_node
 
 
 def convert_to_heading(block):
