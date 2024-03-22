@@ -60,16 +60,16 @@ def convert_to_code(block):
 
 
 def convert_to_unordered_list(block):
-    unordered_list = "<ul>\n"
-    for text in block:
-        unordered_list += f"<li>{text[2:]}</li>\n"
-    unordered_list += "</ul>"
+    unordered_list_children = []
+    for text in block.splitlines():
+        unordered_list_children.append(LeafNode("li", text[2:]))
+    unordered_list = ParentNode("ul", unordered_list_children)
     return unordered_list
 
 
 def convert_to_ordered_list(block):
-    ordered_list = "<ol>\n"
-    for text in block:
-        ordered_list += f"<li>{text[3:]}</li>\n"
-    ordered_list += "</ol>"
+    ordered_list_children = []
+    for text in block.splitlines():
+        ordered_list_children.append(LeafNode("li", text[3:]))
+    ordered_list = ParentNode("ol", ordered_list_children)
     return ordered_list

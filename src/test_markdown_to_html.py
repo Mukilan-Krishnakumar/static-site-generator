@@ -47,13 +47,19 @@ class TestMarkdownToHtml(unittest.TestCase):
         self.assertEqual(converted_code.to_html(), check_code.to_html())
 
     def test_unordered_list_conversion(self):
-        blocks = ["- L1", "- L2", "- L3"]
+        blocks = "- L1\n- L2\n- L3"
         converted_unordered_list = convert_to_unordered_list(blocks)
-        check_unordered_list = "<ul>\n<li>L1</li>\n<li>L2</li>\n<li>L3</li>\n</ul>"
-        self.assertEqual(converted_unordered_list, check_unordered_list)
+        check_unordered_list = ParentNode(
+            "ul", [LeafNode("li", "L1"), LeafNode("li", "L2"), LeafNode("li", "L3")]
+        )
+        self.assertEqual(
+            converted_unordered_list.to_html(), check_unordered_list.to_html()
+        )
 
     def test_ordered_list_conversion(self):
-        blocks = ["1. Testing", "2. Another Test"]
+        blocks = "1. Testing\n2. Another Test"
         converted_ordered_list = convert_to_ordered_list(blocks)
-        check_ordered_list = "<ol>\n<li>Testing</li>\n<li>Another Test</li>\n</ol>"
-        self.assertEqual(converted_ordered_list, check_ordered_list)
+        check_ordered_list = ParentNode(
+            "ol", [LeafNode("li", "Testing"), LeafNode("li", "Another Test")]
+        )
+        self.assertEqual(converted_ordered_list.to_html(), check_ordered_list.to_html())
