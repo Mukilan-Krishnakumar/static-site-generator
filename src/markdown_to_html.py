@@ -4,6 +4,7 @@ from htmlnode import ParentNode
 from leafnode import LeafNode
 from text_to_textnodes import text_to_textnode
 from convert_textnode_to_htmlnode import text_node_to_html_node
+from markdown_to_blocks import markdown_to_blocks, block_to_block_type
 
 
 def text_to_children(text_nodes):
@@ -73,3 +74,24 @@ def convert_to_ordered_list(block):
         ordered_list_children.append(LeafNode("li", text[3:]))
     ordered_list = ParentNode("ol", ordered_list_children)
     return ordered_list
+
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    block_types = []
+    for block in blocks:
+        block_types.append(block_to_block_type(block))
+    block_tuples = zip(blocks, block_types)
+    children_nodes = []
+    block_type_to_function = {
+        BlockType.block_type_quote: convert_to_quote,
+        BlockType.block_type_paragraph: convert_to_paragraph,
+        BlockType.block_type_code: convert_to_code,
+        BlockType.block_type_heading: convert_to_heading,
+        BlockType.block_type_unordered_list: convert_to_unordered_list,
+        BlockType.block_type_ordered_list: convert_to_ordered_list,
+    }
+    for block_tuple in block_tuples:
+        children_nodes.append(block_type_to_function[block_tuple[1]](block_tuple[0]))
+    div_node = ParentNode("div", children_nodes)
+    return div_node

@@ -6,8 +6,9 @@ from markdown_to_html import (
     convert_to_code,
     convert_to_unordered_list,
     convert_to_ordered_list,
+    markdown_to_html_node,
 )
-from htmlnode import ParentNode
+from htmlnode import HTMLNode, ParentNode
 from leafnode import LeafNode
 
 
@@ -63,3 +64,60 @@ class TestMarkdownToHtml(unittest.TestCase):
             "ol", [LeafNode("li", "Testing"), LeafNode("li", "Another Test")]
         )
         self.assertEqual(converted_ordered_list.to_html(), check_ordered_list.to_html())
+
+    def test_markdown_to_html_node(self):
+        mkdwn = """
+This is **bolded** paragraph
+
+This is another paragraph with *italic* text and `code` here
+This is the same paragraph on a new line
+
+* This is a list
+* with items
+
+```
+Creating
+coding masterpiece
+```
+
+Why not"""
+        converted_mkdwn = markdown_to_html_node(mkdwn)
+        check_mkdwn = ParentNode(
+            "div",
+            [
+                ParentNode(
+                    "p",
+                    [
+                        LeafNode(value="This is "),
+                        LeafNode("b", "bolded"),
+                        LeafNode(value=" paragraph"),
+                    ],
+                ),
+                ParentNode(
+                    "p",
+                    [
+                        LeafNode(value="This is another paragraph with "),
+                        LeafNode("i", "italic"),
+                        LeafNode(value=" text and "),
+                        LeafNode("code", "code"),
+                        LeafNode(
+                            value=" here This is the same paragraph on a new line"
+                        ),
+                    ],
+                ),
+                ParentNode(
+                    "ul",
+                    [LeafNode("li", "This is a list"), LeafNode("li", "with items")],
+                ),
+                ParentNode(
+                    "pre",
+                    [
+                        ParentNode(
+                            "code", [LeafNode(value="\nCreating\ncoding masterpiece")]
+                        )
+                    ],
+                ),
+                ParentNode("p", [LeafNode(value="Why not")]),
+            ],
+        )
+        self.assertEqual(check_mkdwn.to_html(), converted_mkdwn.to_html())
