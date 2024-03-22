@@ -33,28 +33,30 @@ def convert_to_quote(block):
 
 def convert_to_heading(block):
     heading_dict = {1: "h1", 2: "h2", 3: "h3", 4: "h4", 5: "h5", 6: "h6"}
-    heading = ""
-    for text in block:
+    heading_children = []
+    for text in block.splitlines():
         heading_hash = text.split(" ")[0]
         heading_text = " ".join(text.split(" ")[1:])
         heading_count = Counter(heading_hash)["#"]
         if heading_count in heading_dict:
-            heading += f"<{heading_dict[heading_count]}>{heading_text}</{heading_dict[heading_count]}>\n"
+            heading_children.append(LeafNode(heading_dict[heading_count], heading_text))
         else:
-            heading += "<p>" + text + "</p>" + "\n"
-    return heading
+            heading_children.append(LeafNode("p", text))
+    return heading_children
 
 
 def convert_to_code(block):
     # Remove the first code lines
-    block[0] = block[0][3:]
+    block = block[3:]
     # Remove the last code lines
-    block[-1] = block[-1][:-3]
-    code = "<pre>\n<code>\n"
-    for text in block:
+    block = block[:-3]
+    code = ""
+    for text in block.splitlines():
         code += text + "\n"
-    code += "</code>\n</pre>"
-    return code
+    code = code[:-1]
+    code_node = LeafNode("code", code)
+    pre_node = ParentNode("pre", [code_node])
+    return pre_node
 
 
 def convert_to_unordered_list(block):
