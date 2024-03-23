@@ -1,4 +1,4 @@
-from leafnode import LeafNode
+from htmlnode import LeafNode
 from textnode import TextType, TextNode
 from extract import extract_markdown_links, extract_markdown_images
 

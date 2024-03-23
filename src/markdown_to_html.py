@@ -1,7 +1,6 @@
 from typing import Counter
 from markdown_to_blocks import BlockType
-from htmlnode import ParentNode
-from leafnode import LeafNode
+from htmlnode import ParentNode, LeafNode
 from text_to_textnodes import text_to_textnode
 from convert_textnode_to_htmlnode import text_node_to_html_node
 from markdown_to_blocks import markdown_to_blocks, block_to_block_type

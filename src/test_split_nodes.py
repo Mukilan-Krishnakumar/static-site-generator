@@ -1,8 +1,7 @@
 import unittest
-from leafnode import LeafNode
 from split_nodes import split_nodes_delimiter, split_nodes_image, split_nodes_link
 from textnode import TextNode, TextType
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestSplitNodes(unittest.TestCase):

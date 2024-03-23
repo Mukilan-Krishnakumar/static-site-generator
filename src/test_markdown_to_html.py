@@ -8,8 +8,7 @@ from markdown_to_html import (
     convert_to_ordered_list,
     markdown_to_html_node,
 )
-from htmlnode import HTMLNode, ParentNode
-from leafnode import LeafNode
+from htmlnode import HTMLNode, ParentNode, LeafNode
 
 
 class TestMarkdownToHtml(unittest.TestCase):

@@ -37,3 +37,18 @@ class ParentNode(HTMLNode):
             str_repr += node.to_html()
         str_repr += f"</{self.tag}>"
         return str_repr
+
+
+class LeafNode(HTMLNode):
+    def __init__(self, tag=None, value=None, props=None):
+        if value == None:
+            raise ValueError
+        super().__init__(tag=tag, value=value, props=props)
+
+    def to_html(self):
+        if self.value == None:
+            raise ValueError
+        if self.tag == None:
+            return self.value
+        else:
+            return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
