@@ -45,6 +45,7 @@ def split_nodes_image(old_nodes):
         else:
             text_val = node.text
             for extracted_image in extracted_images:
+                print(extracted_image[1])
                 split_text = text_val.split(
                     f"![{extracted_image[0]}]({extracted_image[1]})", 1
                 )
@@ -53,7 +54,9 @@ def split_nodes_image(old_nodes):
                 new_nodes.append(TextNode(split_text[0], TextType.text_type_text))
                 new_nodes.append(
                     TextNode(
-                        extracted_image[0], TextType.text_type_image, extracted_image[1]
+                        extracted_image[0],
+                        TextType.text_type_image,
+                        "." + extracted_image[1],
                     )
                 )
                 text_val = split_text[1]

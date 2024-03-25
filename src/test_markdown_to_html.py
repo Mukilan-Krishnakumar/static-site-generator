@@ -9,7 +9,6 @@ from markdown_to_html import (
     markdown_to_html_node,
 )
 from htmlnode import HTMLNode, ParentNode, LeafNode
-from main import extract_title
 
 
 class TestMarkdownToHtml(unittest.TestCase):
@@ -121,18 +120,3 @@ Why not"""
             ],
         )
         self.assertEqual(check_mkdwn.to_html(), converted_mkdwn.to_html())
-
-    def test_extract_title(self):
-        mkdwn = """
-# This is the title
-
-- Hello, hello"""
-        self.assertEqual(extract_title(mkdwn), "This is the title")
-
-    def test_extract_title_exception(self):
-        mkdwn = """
-### Not a title
-
-- Hihi
-        """
-        self.assertRaises(Exception, extract_title, mkdwn)

@@ -4,6 +4,7 @@ from htmlnode import ParentNode, LeafNode
 from text_to_textnodes import text_to_textnode
 from convert_textnode_to_htmlnode import text_node_to_html_node
 from markdown_to_blocks import markdown_to_blocks, block_to_block_type
+from text_to_textnodes import text_to_textnode
 
 
 def text_to_children(text_nodes):
@@ -33,16 +34,17 @@ def convert_to_quote(block):
 
 def convert_to_heading(block):
     heading_dict = {1: "h1", 2: "h2", 3: "h3", 4: "h4", 5: "h5", 6: "h6"}
-    heading_children = []
     for text in block.splitlines():
         heading_hash = text.split(" ")[0]
         heading_text = " ".join(text.split(" ")[1:])
         heading_count = Counter(heading_hash)["#"]
         if heading_count in heading_dict:
-            heading_children.append(LeafNode(heading_dict[heading_count], heading_text))
+            htmlnodes = []
+            for text_nodes in text_to_textnode(heading_text):
+                htmlnodes.append(text_node_to_html_node(text_nodes))
+            return ParentNode(heading_dict[heading_count], htmlnodes)
         else:
-            heading_children.append(LeafNode("p", text))
-    return heading_children
+            return LeafNode("p", text)
 
 
 def convert_to_code(block):
@@ -62,7 +64,10 @@ def convert_to_code(block):
 def convert_to_unordered_list(block):
     unordered_list_children = []
     for text in block.splitlines():
-        unordered_list_children.append(LeafNode("li", text[2:]))
+        sub_children_nodes = []
+        for text_node in text_to_textnode(text[2:]):
+            sub_children_nodes.append(text_node_to_html_node(text_node))
+        unordered_list_children.append(ParentNode("li", sub_children_nodes))
     unordered_list = ParentNode("ul", unordered_list_children)
     return unordered_list
 
@@ -70,7 +75,10 @@ def convert_to_unordered_list(block):
 def convert_to_ordered_list(block):
     ordered_list_children = []
     for text in block.splitlines():
-        ordered_list_children.append(LeafNode("li", text[3:]))
+        sub_children_nodes = []
+        for text_node in text_to_textnode(text[3:]):
+            sub_children_nodes.append(text_node_to_html_node(text_node))
+        ordered_list_children.append(ParentNode("li", sub_children_nodes))
     ordered_list = ParentNode("ol", ordered_list_children)
     return ordered_list
 
