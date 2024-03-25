@@ -1,8 +1,21 @@
 import os
+import re
 import shutil
 
-STATIC_PATH = os.path.join("../", "static")
-PUBLIC_PATH = os.path.join("../", "public")
+STATIC_PATH = "./static"
+PUBLIC_PATH = "./public"
+
+
+def extract_title(markdown):
+    lines = markdown.splitlines()
+    for text in lines:
+        if re.match(r"(?<!#)# {1}", text):
+            return text[2:]
+    raise Exception("No Title given")
+
+
+def generate_page_function(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
 
 def recursive_copy(path):
