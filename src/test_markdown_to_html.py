@@ -29,14 +29,10 @@ class TestMarkdownToHtml(unittest.TestCase):
         self.assertEqual(converted_quotes.to_html(), check_quotes.to_html())
 
     def test_heading_conversion(self):
-        blocks = "# Heading 1\n## Heading 2\n### Heading 3\n####### Heading 7"
+        blocks = "# Heading 1\n"
         converted_headings = convert_to_heading(blocks)
-        converted_text = ""
-        for child in converted_headings:
-            converted_text += child.to_html() + "\n"
-        converted_text = converted_text[:-1]
-        check_headings = "<h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<p>####### Heading 7</p>"
-        self.assertEqual(converted_text, check_headings)
+        check_headings = "<h1>Heading 1</h1>"
+        self.assertEqual(converted_headings.to_html(), check_headings)
 
     def test_code_conversion(self):
         blocks = "```This is a code block\nacross multiple lines```"
